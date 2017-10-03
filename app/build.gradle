@@ -2,36 +2,37 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 ext {
-    supportLibVersion = '26.1.0'
+  supportLibVersion = '26.1.0'
 }
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.2"
-    defaultConfig {
-        applicationId "com.aproperfox.emojioverlay"
-        minSdkVersion 21
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+  compileSdkVersion 26
+  buildToolsVersion "26.0.2"
+  defaultConfig {
+    applicationId "com.aproperfox.emojioverlay"
+    minSdkVersion 23
+    targetSdkVersion 26
+    versionCode 1
+    versionName "1.0"
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+  }
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
+  }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile "com.android.support:appcompat-v7:$supportLibVersion"
-    compile "com.android.support:support-emoji:$supportLibVersion"
-    compile "com.android.support:support-emoji-appcompat:$supportLibVersion"
-    compile "com.android.support:support-emoji-bundled:$supportLibVersion"
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+  compile fileTree(dir: 'libs', include: ['*.jar'])
+  compile "com.android.support:appcompat-v7:$supportLibVersion"
+  compile "com.android.support:support-emoji:$supportLibVersion"
+  compile "com.android.support:support-emoji-appcompat:$supportLibVersion"
+  compile "com.android.support:support-emoji-bundled:$supportLibVersion"
+  compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+  compile 'com.jakewharton.timber:timber:4.5.1'
 }
 repositories {
-    mavenCentral()
+  mavenCentral()
 }

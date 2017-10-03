@@ -1,14 +1,15 @@
 package com.aproperfox.emojioverlay
 
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
-import android.support.v4.app.ActivityCompat
+import android.os.Bundle
+import android.widget.Toast
 
-class OverlayActivity : ActivityCompat() {
+class OverlayActivity : Activity() {
 
-  companion object {
-    fun newIntent(context: Context) : Intent {
-      return Intent(context, OverlayActivity::class.java)
-    }
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    val text = intent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)
+    Toast.makeText(this, text, Toast.LENGTH_LONG).show()
   }
 }
