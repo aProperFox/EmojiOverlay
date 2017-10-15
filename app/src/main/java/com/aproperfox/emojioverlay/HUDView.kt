@@ -3,22 +3,26 @@ package com.aproperfox.emojioverlay
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
-import android.support.text.emoji.widget.EmojiAppCompatTextView
+import android.support.text.emoji.EmojiCompat
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.Toast
+import kotlinx.android.synthetic.main.emoji_overlay.view.*
 import timber.log.Timber
 
 class HUDView(context: Context) : ViewGroup(context) {
 
   init {
-    background = resources.getDrawable(R.color.abc_input_method_navigation_guard)
+    (context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater)
+        .inflate(R.layout.emoji_overlay, this, true)
   }
 
-  fun setText(text: String) {
-    val emojiTextView = EmojiAppCompatTextView(context)
-    addView(emojiTextView)
-    emojiTextView.text = text
+  fun setText(text: CharSequence) {
+    EmojiListener.listen()
+        .subscribe(
+            { emojiTextView.text = EmojiCompat.get().process(text) },
+            { Toast.makeText(context, "Failed to connect to emoji service", Toast.LENGTH_SHORT).show() })
     emojiTextView.setTextColor(Color.CYAN)
     Timber.d("Adding view and setting text...?")
   }

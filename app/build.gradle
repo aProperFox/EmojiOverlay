@@ -11,7 +11,7 @@ android {
   buildToolsVersion "26.0.2"
   defaultConfig {
     applicationId "com.aproperfox.emojioverlay"
-    minSdkVersion 23
+    minSdkVersion 21
     targetSdkVersion 26
     versionCode 1
     versionName "1.0"
@@ -33,6 +33,7 @@ dependencies {
   compile "com.android.support:support-emoji-bundled:$supportLibVersion"
   compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
   compile 'com.jakewharton.timber:timber:4.5.1'
+  compile "io.reactivex.rxjava2:rxjava:2.1.5"
 }
 repositories {
   mavenCentral()

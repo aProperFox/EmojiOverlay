@@ -16,5 +16,10 @@
         </item>
   </string-array>
 
-  <string name="main_text">Check out these advanced emojis and stuff: %s</string>
+  <string name="old_emoji_label">Old emoji parsing:</string>
+  <string name="new_emoji_label">Compatibility emoji parsing:</string>
+  <string name="emoji_text">Here\'s how we parse emojis 👩‍💻 👩‍🎤</string>
+  <string name="emoji_paste_text">Tap here to paste the contents of the clipboard</string>
+
+  <string name="popup_window_button">Open Popup</string>
 </resources>

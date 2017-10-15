@@ -31,17 +31,18 @@ class OverlayService : Service() {
     createView()
   }
 
-  override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+  override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
     Timber.d("onStartCommand")
-    val text = intent.getStringExtra(KEY_TEXT)
-    setViewText(text)
+    intent?.let {
+      val text = it.getStringExtra(KEY_TEXT)
+      setViewText(text)
+    }
     return super.onStartCommand(intent, flags, startId)
   }
 
-  override fun onDestroy() {
-    Timber.d("onDestroy")
+  override fun onUnbind(intent: Intent?): Boolean {
     wm.removeView(overlay)
-    super.onDestroy()
+    return super.onUnbind(intent)
   }
 
   private fun createView() {

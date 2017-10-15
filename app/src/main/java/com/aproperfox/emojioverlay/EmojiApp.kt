@@ -13,19 +13,11 @@ class EmojiApp : Application() {
     val fontRequest = FontRequest(
         "com.google.android.gms.fonts",
         "com.google.android.gms",
-        "Moto Color Emoji Compat",
+        "Noto Color Emoji Compat",
         R.array.com_google_android_gms_fonts_certs)
     val config = FontRequestEmojiCompatConfig(applicationContext, fontRequest)
         .setReplaceAll(true)
-        .registerInitCallback(object : EmojiCompat.InitCallback() {
-          override fun onInitialized() {
-            Timber.i("EmojiCompat initialized")
-          }
-
-          override fun onFailed(throwable: Throwable?) {
-            Timber.e("EmojiCompat initialization failed %s", throwable)
-          }
-        })
+        .registerInitCallback(EmojiListener)
     EmojiCompat.init(config)
   }
 }
