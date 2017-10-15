@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="300dp"
-  android:layout_height="200dp"
-  android:background="@color/colorAccent">
+<com.txusballesteros.bubbles.BubbleLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:background="@drawable/overlay_background"
+  android:clipChildren="false"
+  android:clipToPadding="false">
 
   <android.support.text.emoji.widget.EmojiAppCompatTextView
     android:id="@+id/emojiTextView"
-    android:layout_width="200dp"
-    android:layout_height="20dp"
-    android:background="@android:color/white"
-    android:textColor="@android:color/black"
+    android:minWidth="128dp"
+    android:minHeight="32dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:gravity="center"
-    tools:text="Look at this text doge"/>
+    android:textSize="16sp"
+    android:textColor="@android:color/black" />
 
-</FrameLayout>
+</com.txusballesteros.bubbles.BubbleLayout>

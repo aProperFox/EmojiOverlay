@@ -1,14 +1,17 @@
 package com.aproperfox.emojioverlay
 
 import android.app.Service
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.graphics.PixelFormat
 import android.os.IBinder
-import android.view.WindowManager
+import android.view.LayoutInflater
+import com.txusballesteros.bubbles.BubbleLayout
+import com.txusballesteros.bubbles.BubblesManager
+import kotlinx.android.synthetic.main.emoji_overlay.view.*
 import timber.log.Timber
 
-class OverlayService : Service() {
+class OverlayService : Service(), ClipboardManager.OnPrimaryClipChangedListener {
 
   companion object {
     private val KEY_TEXT = "key_text"
@@ -19,48 +22,50 @@ class OverlayService : Service() {
         }
   }
 
-  private lateinit var overlay: HUDView
-  private lateinit var wm: WindowManager
+  private lateinit var bubblesManager: BubblesManager
+  private lateinit var clipBoardManager: ClipboardManager
 
   override fun onBind(intent: Intent?): IBinder? = null
 
   override fun onCreate() {
     super.onCreate()
-    Timber.d("onCreate")
-    wm = getSystemService(Context.WINDOW_SERVICE) as WindowManager
-    createView()
+    initServices()
   }
 
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
     Timber.d("onStartCommand")
     intent?.let {
       val text = it.getStringExtra(KEY_TEXT)
-      setViewText(text)
+      createView(text)
     }
     return super.onStartCommand(intent, flags, startId)
   }
 
   override fun onUnbind(intent: Intent?): Boolean {
-    wm.removeView(overlay)
+    clipBoardManager.removePrimaryClipChangedListener(this)
+    bubblesManager.recycle()
     return super.onUnbind(intent)
   }
 
-  private fun createView() {
-    Timber.d("createView")
-    //Inflate the chat head layout we created
-    overlay = HUDView(this)
-    //Add the view to the window.
-    val params: WindowManager.LayoutParams = WindowManager.LayoutParams(
-        WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
-        WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
-        PixelFormat.TRANSLUCENT)
-    params.width = 300
-    params.height = 100
-    wm.addView(overlay, params)
+  override fun onPrimaryClipChanged() {
+    createView(clipBoardManager.primaryClip.getItemAt(0).text)
   }
 
-  private fun setViewText(text: String) {
-    Timber.d("setViewText")
-    overlay.setText(text)
+  private fun initServices() {
+    clipBoardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+    clipBoardManager.addPrimaryClipChangedListener( this )
+    bubblesManager = BubblesManager.Builder(this)
+        .build()
+    bubblesManager.initialize()
+  }
+
+  private fun createView(text: CharSequence) {
+    val bubbleView = LayoutInflater.from(this).inflate(R.layout.emoji_overlay, null) as BubbleLayout
+    bubbleView.emojiTextView.text = text
+    bubbleView.setOnBubbleClickListener {
+      bubblesManager.removeBubble(it)
+    }
+    bubbleView.setShouldStickToWall(true)
+    bubblesManager.addBubble(bubbleView, 60, 20)
   }
 }

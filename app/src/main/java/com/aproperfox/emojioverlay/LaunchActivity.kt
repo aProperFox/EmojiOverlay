@@ -9,7 +9,10 @@ import android.os.Bundle
 import android.provider.Settings
 import android.support.text.emoji.EmojiCompat
 import android.support.v7.app.AppCompatActivity
+import android.view.LayoutInflater
 import android.widget.Toast
+import com.txusballesteros.bubbles.BubbleLayout
+import com.txusballesteros.bubbles.BubblesManager
 import kotlinx.android.synthetic.main.activity_launch.*
 
 class LaunchActivity : AppCompatActivity() {
@@ -18,19 +21,23 @@ class LaunchActivity : AppCompatActivity() {
     const val REQUEST_CODE = 33
   }
 
+  private lateinit var bubblesManager: BubblesManager
   private lateinit var clipboardManager: ClipboardManager
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_launch)
     delegate.isHandleNativeActionModesEnabled = true
-    initViews()
     initServices()
+    initViews()
   }
 
   private fun initServices() {
     handleOverlayPermissions()
     clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    bubblesManager = BubblesManager.Builder(this)
+        .build()
+    bubblesManager.initialize()
   }
 
   private fun initViews() {
@@ -44,6 +51,16 @@ class LaunchActivity : AppCompatActivity() {
       pasteView.text = clipboardManager.primaryClip
           .getItemAt(0)
           .text
+    }
+
+    openPopupButton.setOnClickListener {
+      val bubbleView = LayoutInflater.from(this).inflate(R.layout.emoji_overlay, null) as BubbleLayout
+      bubbleView.setOnBubbleRemoveListener { }
+      bubbleView.setOnBubbleClickListener {
+        bubblesManager.removeBubble(it)
+      }
+      bubbleView.setShouldStickToWall(true)
+      bubblesManager.addBubble(bubbleView, 60, 20)
     }
   }
 
