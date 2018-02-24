@@ -12,7 +12,6 @@ import kotlinx.android.synthetic.main.emoji_overlay.view.*
 import timber.log.Timber
 
 class OverlayService : Service(), ClipboardManager.OnPrimaryClipChangedListener {
-
   companion object {
     private val KEY_TEXT = "key_text"
 

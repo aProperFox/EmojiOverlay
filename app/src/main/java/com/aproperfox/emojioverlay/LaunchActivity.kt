@@ -38,6 +38,7 @@ class LaunchActivity : AppCompatActivity() {
     bubblesManager = BubblesManager.Builder(this)
         .build()
     bubblesManager.initialize()
+    startService(TextHandlerService.newInstance(this))
   }
 
   private fun initViews() {
